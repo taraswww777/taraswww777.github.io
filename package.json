@@ -1,7 +1,7 @@
 {
-  "name": "taraswww777_dev_fe",
+  "name": "taraswww777.github.io",
   "version": "1.0.1",
-  "description": "Site Taras Kovalev (taraswww777). U can see taraswww777.dev",
+  "description": "Site Taras Kovalev (taraswww777). U can see taraswww777.github.io",
   "scripts": {
     "dev": "next dev",
     "build": "next build && node scripts/postbuild-exclude-admin.js",
