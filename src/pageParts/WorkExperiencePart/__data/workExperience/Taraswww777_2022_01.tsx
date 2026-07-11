@@ -4,8 +4,8 @@ import { FaIcon } from '../../../../ui/FaIcon';
 export const Taraswww777_2022_02: WorkExperienceDto = {
   "dateBegin": "2022-02-24T01:00:00.000Z",
   "companyName": "taraswww777",
-  "companySite": "https://taraswww777.dev/",
-  "companySiteName": "taraswww777.dev",
+  "companySite": "https://taraswww777.github.io/",
+  "companySiteName": "taraswww777",
   "workPosition": "Сам себе хозяин",
   "technologiesTags": [
     "Javascript", "React", "Typescript", "HTML5", 'PostCss', "CSS3", "webpack", 'swc',
