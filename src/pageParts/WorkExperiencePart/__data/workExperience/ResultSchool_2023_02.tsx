@@ -2,6 +2,7 @@ import {WorkExperienceDto} from 'src/types/dto';
 
 export const ResultSchool_2023_02: WorkExperienceDto = {
   "dateBegin": "2023-02-01T01:00:00.000Z",
+  "dateEnd": "2026-01-01T01:00:00.000Z",
   "companyName": "ИП Минин В. И. (Result School)",
   "companySite": "https://result.school/",
   "companySiteName": "result.school",
@@ -25,8 +26,7 @@ export const ResultSchool_2023_02: WorkExperienceDto = {
       </ul>
 
       <p className="pt-2">
-        За время преподавания успел выпустить 2 группы мидл специалистов.
-        В настоящее время обучаю 3 группу.
+        За время преподавания успел выпустить 5 групп мидл специалистов.
       </p>
     </>
   )
