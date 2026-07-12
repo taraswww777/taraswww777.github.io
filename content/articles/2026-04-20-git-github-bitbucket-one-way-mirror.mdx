@@ -4,17 +4,17 @@ import MdxLayout from 'src/app/MdxLayout';
 <MdxLayout>
   <MdxTemplate
     pubdate={'2026-04-20'}
-    title={'Два репозитория: GitHub и Bitbucket без MR между площадками'}
+    title={'Зеркалирование репозиториев: GitHub и Bitbucket без MR между площадками'}
     ogCanonicalUrl={ARTICLE.link}
-    description={'Два remote, без pull request между GitHub и Bitbucket: черновики и эксперименты на GitHub, слияния в main/develop — в Bitbucket; как доставлять коммиты в обе стороны обычным git push и pull.'}
+    description={'Зеркалирование репозиториев GitHub и Bitbucket без PR/MR между хостингами: эталон main/develop в Bitbucket, зеркало на GitHub, черновики в песочнице — обычным git push и pull.'}
   >
-    Иногда у команды два мира: публичный или удобный GitHub для повседневной работы и корпоративный Bitbucket, к которому привязаны CI, Jira и «боевые» политики. Тянуть всё через merge request из одного хостинга в другой — лишняя бюрократия. Ниже — схема, в которой **между GitHub и Bitbucket нет MR/PR**: только коммиты и обычные `git push` / `git pull` на два `remote`.
+    Иногда у команды два мира: публичный или удобный GitHub для повседневной работы и корпоративный Bitbucket, к которому привязаны CI, Jira и «боевые» политики. Тянуть всё через merge request из одного хостинга в другой — лишняя бюрократия. Ниже — **зеркалирование репозиториев**, в котором **между GitHub и Bitbucket нет MR/PR**: только коммиты и обычные `git push` / `git pull` на два `remote`.
 
-    При этом направление потока **разное для разных веток**. Ответственные ветки (`main`, `develop` и т.п.) часто живут по правилам Bitbucket: merge request’ы вливают **только там**, и именно там зафиксирована «официальная» история. В GitHub те же ветки тогда держат как **зеркало**: после каждого влития на Bitbucket их подтягивают и пушат на `github`, чтобы песочница не отставала от контура компании. Черновые ветки по-прежнему можно крутить преимущественно на GitHub и переносить в Bitbucket отдельным шагом — об этом ниже.
+    Направление потока **разное для разных веток**. Ответственные ветки (`main`, `develop` и т.п.) часто живут по правилам Bitbucket: merge request’ы вливают **только там**, и именно там зафиксирована «официальная» история. В GitHub те же ветки держат как **одностороннее зеркало**: после каждого влития на Bitbucket их подтягивают и пушат на `github`, чтобы песочница не отставала от контура компании. Черновые ветки по-прежнему можно крутить преимущественно на GitHub и переносить в Bitbucket отдельным шагом — об этом ниже.
 
     ## Идея в двух предложениях
 
-    **Bitbucket** — место, где проходят ревью и в `main` / `develop` попадают только влитые MR. **GitHub** — удобная площадка для экспериментов, личных веток и переписывания истории без риска для корпоративных правил. Между хостингами мы не открываем второй вид ревью: только доставка уже готовых коммитов выбранным `remote`.
+    **Bitbucket** — место, где проходят ревью и в `main` / `develop` попадают только влитые MR. **GitHub** — удобная площадка для экспериментов, личных веток и переписывания истории без риска для корпоративных правил. Зеркалирование между хостингами — это не второй вид ревью, а доставка уже готовых коммитов выбранным `remote`.
 
     ## Подготовка: два remote на одном клоне
 
@@ -51,7 +51,7 @@ import MdxLayout from 'src/app/MdxLayout';
 
     Перед первым `git push origin main` имеет смысл пробежаться по логу и убедиться, что авторы везде ожидаемые (ниже — как поправить).
 
-    ## Синхронизация Bitbucket → GitHub для `main` и `develop`
+    ## Зеркалирование Bitbucket → GitHub для `main` и `develop`
 
     Если **норма** — вливать MR в Bitbucket в `main` или `develop`, то после каждого такого слияния (или по расписанию, если MR много) нужно обновить те же ветки на GitHub, иначе два remote разъедутся.
 
@@ -67,11 +67,11 @@ import MdxLayout from 'src/app/MdxLayout';
     git push github develop
     ```
 
-    Смысл простой: **источник истины для ответственных веток — Bitbucket**; на GitHub вы отражаете ту же линию коммитов. Отдельный merge request на GitHub для этого не нужен — только `pull` с `origin` и `push` на `github`.
+    Смысл простой: **источник истины для ответственных веток — Bitbucket**; на GitHub вы зеркалируете ту же линию коммитов. Отдельный merge request на GitHub для этого не нужен — только `pull` с `origin` и `push` на `github`.
 
     **На что обратить внимание**
 
-    - Если на GitHub в `main` / `develop` кто-то успел закоммитить то, чего нет в Bitbucket, при `push` получите отказ или нелинейную историю. Договоритесь в команде: в эти ветки на `github` не коммитят напрямую (или только через тот же цикл «сначала MR в Bitbucket, потом синхронизация»).
+    - Если на GitHub в `main` / `develop` кто-то успел закоммитить то, чего нет в Bitbucket, при `push` получите отказ или нелинейную историю. Договоритесь в команде: в эти ветки на `github` не коммитят напрямую (или только через тот же цикл «сначала MR в Bitbucket, потом зеркалирование»).
     - Если расхождение уже есть, чините осознанно: например, сбросить локальную копию под `origin` и сделать `git push github main --force-with-lease` — **только** если все согласны перезаписать зеркало на GitHub (и это не ломает чужие ветки).
     - Тот же паттерн подходит для любой «эталонной» ветки, не только `main` / `develop`.
 
@@ -94,7 +94,7 @@ import MdxLayout from 'src/app/MdxLayout';
     git push github main
     ```
 
-    Здесь вы вливаете готовое в **Bitbucket** и сразу поднимаете то же `main` на **GitHub**. Если же по процессу в `main` попадают **только** через MR в Bitbucket, этот merge на машине заменяется вашим обычным циклом: ветка уходит в Bitbucket отдельным push, MR там, после merge — блок «Синхронизация Bitbucket → GitHub» выше.
+    Здесь вы вливаете готовое в **Bitbucket** и сразу поднимаете то же `main` на **GitHub**. Если же по процессу в `main` попадают **только** через MR в Bitbucket, этот merge на машине заменяется вашим обычным циклом: ветка уходит в Bitbucket отдельным push, MR там, после merge — блок «Зеркалирование Bitbucket → GitHub» выше.
 
     ## Сценарий: фича только через MR в Bitbucket
 
@@ -145,7 +145,7 @@ import MdxLayout from 'src/app/MdxLayout';
 
     ## Шпаргалка на каждый день
 
-    **После MR в Bitbucket в `main` / `develop` — обновить GitHub**
+    **После MR в Bitbucket в `main` / `develop` — зеркалировать на GitHub**
 
     ```bash
     git fetch origin
@@ -174,7 +174,7 @@ import MdxLayout from 'src/app/MdxLayout';
     make test
     ```
 
-    ## Когда такой расклад оправдан
+    ## Когда такое зеркалирование оправдано
 
     | Ситуация | Зачем |
     |----------|--------|
@@ -187,5 +187,13 @@ import MdxLayout from 'src/app/MdxLayout';
     | MR только в Bitbucket в `main` / `develop` | После вливания — `pull origin` и `push github`, GitHub остаётся копией без второго ревью |
 
     **Итог:** для **ответственных веток** договоритесь, где лежит каноническая история (в вашем случае — после MR в Bitbucket), и регулярно **зеркалируйте её на GitHub** простым `pull origin` + `push github`. Для **черновиков** удобен GitHub. Между площадками по-прежнему не нужен MR: только осознанные `push`/`pull` на два remote и общие правила «кто главный для какой ветки».
+
+    ## Ссылки
+
+    - <a href="https://git-scm.com/docs/git-remote" target="_blank">git remote</a> — добавление и просмотр remote
+    - <a href="https://git-scm.com/docs/git-push" target="_blank">git push</a> — в том числе `--force-with-lease`
+    - <a href="https://git-scm.com/docs/git-pull" target="_blank">git pull</a>
+    - <a href="https://docs.github.com/en/get-started/git-basics/managing-remote-repositories" target="_blank">GitHub: управление remote</a>
+    - <a href="https://support.atlassian.com/bitbucket-cloud/docs/change-the-remote-url-to-your-repository/" target="_blank">Bitbucket: remote URL репозитория</a>
   </MdxTemplate>
 </MdxLayout>
