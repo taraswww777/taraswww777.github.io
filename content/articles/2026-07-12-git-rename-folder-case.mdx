@@ -1,0 +1,89 @@
+import { MdxTemplate } from 'src/components/mdx';
+import { LINKS } from 'src/constants/links';
+import MdxLayout from 'src/app/MdxLayout';
+
+<MdxLayout>
+  <MdxTemplate
+    pubdate={'2026-07-12'}
+    title={'Git и смена регистра папки: почему CI падает, а локально всё ок'}
+    ogCanonicalUrl={ARTICLE.link}
+    description={'Рефакторинг HTTPClient → HttpClient после код-ревью: локально всё собирается, CI на Linux падает. Почему Git игнорирует смену регистра на Windows и как переименовать папку через git mv.'}
+  >
+    Пишем React/TypeScript-приложение. На код-ревью оставили комментарий: в одном месте <code>HTTP</code>, в другом <code>Http</code> — надо привести к единому виду. Договорились на <code>Http</code>. WebStorm с этим справляется отлично: переименовал папку, поправил импорты, закоммитил, запушил — и получил красный CI. Локально при этом всё было зелёным.
+
+    ## Что случилось
+
+    Папка называлась <code>HTTPClient</code>, целевое имя — <code>HttpClient</code>. Зарядился чаем и за час отрефакторил всё: не только регистр, но и другие замечания по PR. Сделал <code>commit</code>, <code>push</code>, жду CI — и проверки падают. В логах что-то вроде <em>Module not found: Can't resolve './components/HttpClient/HttpClient'</em>.
+
+    Странно: локально папка <code>HttpClient</code> на месте, линтеры и тесты проходят. Ради эксперимента переключаюсь на <code>develop</code> — там всё собирается. Возвращаюсь в фича-ветку — и локальный билд тоже падает с той же ошибкой, что и на CI. Значит, дело не в «глючном» пайплайне.
+
+    В PR было пять коммитов. Чтобы не размножать путаницу с регистрами в истории, пришлось сквошнуть их в один — эстетика уступила работоспособности.
+
+    Дальше — двухшаговое переименование, чтобы Git точно увидел смену имени:
+
+    1. <code>HTTPClient</code> → <code>HTTPClient-temp</code>, затем <code>commit --amend</code>
+    2. <code>HTTPClient-temp</code> → <code>HttpClient</code>, снова <code>commit --amend</code>
+
+    Локальные проверки — ок. Пушу с <code>--force-with-lease</code> (историю переписали) — CI наконец зелёный.
+
+    ## Почему локально работает, а на CI — нет
+
+    На Windows (и macOS) файловая система по умолчанию **не различает регистр** в путях: <code>HTTPClient</code> и <code>HttpClient</code> — одно и то же имя. Git на этих ОС тоже настроен так: <code>core.ignorecase = true</code>.
+
+    Когда WebStorm через <code>Shift+F6</code> «переименовывает» папку, меняя только регистр, для ОС ничего не меняется. Git может зафиксировать правки внутри файлов, но **не записать** смену регистра самой папки в дереве коммита. В индексе остаётся старое имя, в рабочей копии — новое, а Windows это прощает.
+
+    CI крутится на Linux, где <code>HTTPClient</code> и <code>HttpClient</code> — **две разные папки**. Импорт <code>./HttpClient/...</code> не находит <code>./HTTPClient/...</code> — отсюда <em>Module not found</em>.
+
+    Переключение между <code>develop</code> (старый регистр) и фича-веткой (новый в коде, старый в Git) окончательно ломает локальную картину — и ошибка воспроизводится у вас на машине.
+
+    ## Как починить, если уже закоммитили
+
+    Если вы уже запушили «кривое» переименование:
+
+    **Шаг 1.** При необходимости сведите коммиты ветки к одному (squash), чтобы не тащить путаницу через rebase.
+
+    **Шаг 2.** Переименуйте через промежуточное имя:
+
+    ```bash
+    git mv src/components/HTTPClient src/components/HTTPClient-temp
+    git commit --amend --no-edit
+    ```
+
+    **Шаг 3.** Доведите до целевого имени:
+
+    ```bash
+    git mv src/components/HTTPClient-temp src/components/HttpClient
+    git commit --amend --no-edit
+    ```
+
+    **Шаг 4.** Отправьте переписанную историю:
+
+    ```bash
+    git push --force-with-lease
+    ```
+
+    **Шаг 5.** Проверьте билд локально **после** переключения на родительскую ветку и обратно — так вы поймаете ту же проблему, что и CI, если фикс не сработал.
+
+    ## Как переименовать правильно с первого раза
+
+    Не ждите падения CI — сделайте двухшаговый <code>git mv</code> **до** push:
+
+    ```bash
+    git mv src/components/HTTPClient src/components/HTTPClient-temp
+    git mv src/components/HTTPClient-temp src/components/HttpClient
+    git commit -m "Rename HTTPClient to HttpClient"
+    ```
+
+    Почему два шага: для Git и файловой системы это два однозначных действия — удаление старого пути и создание нового. Нет этапа, где нужно угадать, изменился ли только регистр.
+
+    **Практические советы:**
+
+    - При смене **только регистра** не полагайтесь на <code>Shift+F6</code> в IDE — используйте терминал и <code>git mv</code>
+    - После переименования смотрите <code>git status</code>: должны быть <code>renamed</code>, а не только <code>modified</code> внутри папки
+    - Сборку в Docker или на Linux-раннере можно запустить до push — проблему поймаете раньше
+
+    Переименование регистра в Git — не обычный рефакторинг, а минное поле на стыке Windows и Linux. Промежуточное имя — самый надёжный обход.
+
+    А у вас случалось, что CI падал из-за регистра папки, хотя локально всё работало?
+  </MdxTemplate>
+</MdxLayout>
