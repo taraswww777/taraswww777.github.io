@@ -1,5 +1,22 @@
 {
   "articles": {
+    "2026-10-07-system-design-for-fe-developer": {
+      "status": "published",
+      "path": "2026-10-07-system-design-for-fe-developer",
+      "title": "Системный дизайн для FE‑разработчика: учим на реальном проекте",
+      "publishedAt": "2026-10-07",
+      "author": "Тарас Ковалёв",
+      "description": "Как научить фронтенд‑разработчика системному дизайну, чтобы результатом стала работающая функциональность. Разбираем на примере плагина Docs Tasks для VS Code.",
+      "tags": [
+        "frontend",
+        "system-design",
+        "архитектура",
+        "обучение",
+        "vscode"
+      ],
+      "type": "article",
+      "slug": "2026-10-07-system-design-for-fe-developer"
+    },
     "2023-10-01-frontend-conf-day-0": {
       "slug": "2023-10-01-frontend-conf-day-0",
       "title": "FrontendConf 2023 день 0",
