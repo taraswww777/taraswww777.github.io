@@ -9,18 +9,21 @@ export const InnoTech_OPS_2025_07: WorkExperienceDto = {
   teamName: "ВТБ. Служба Сервисы управления учетно-операционными данными. Группа OPS 4",
   technologiesTags: [
     'Javascript', 'React', 'TypeScript', 'node', 'AdmiralDS', 'StyledComponents',
-    'ModuleFederation', 'Сфера+', 'OpenAPI',
-    'Webpack', 'Jest', 'JAVA'
+    'ModuleFederation', 'Сфера+', 'OpenAPI', 'Docker', 'fastify',
+    'Webpack', 'Jest', 'JAVA', 'zod'
   ],
   description: (
     <div>
       <H4 className="">Ключевые достижения:</H4>
       <ul className="list-disc space-y-4">
         <li className="flex items-start">
-          Посильно улучшаю BE сервисы на JAVA
+          Внедрил поддержку фронтом моментальных изменений в API контракте.
+          Это позволило более оперативно вносить правки в код FE приложений.
+          Также команда может стартовать работы раньше чем до них дойдёт BE.
+          На сегодня уже 3 сервиса находится на поддержке.
         </li>
         <li className="flex items-start">
-          Разрабатываем интерфейсы
+          Спроектировал и сформулировал ключевые UX паттерны присущие нашему продукту. Это существенно сократило количество согласований дизайнов.
         </li>
       </ul>
     </div>
