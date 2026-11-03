@@ -8,6 +8,7 @@ import { SITE_NAME } from '../constants/common';
 
 const inter = Inter({ subsets: ["cyrillic"] });
 import type { Viewport } from 'next'
+import { isLocalhost } from '../utils/isLocalhost';
 
 export const viewport: Viewport = {
   themeColor: 'black',
@@ -37,7 +38,7 @@ export default function RootLayout({
     </head>
     <body className={inter.className}>
     {children}
-    <YaMetricCounter />
+    {!isLocalhost() ? <YaMetricCounter /> : null}
     </body>
     </html>
   );

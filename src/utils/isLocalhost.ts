@@ -3,7 +3,7 @@ export const isLocalhost = (): boolean => {
     return true;
   }
   if (typeof window !== "undefined") {
-    return window?.location?.host === 'localhost:3000'
+    return window?.location?.host.includes('localhost')
   }
 
   return false;
