@@ -2,3 +2,9 @@ dist
 node_modules
 .git
 .idea
+.cursor
+.next
+.github
+docs
+coverage
+temp
