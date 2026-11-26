@@ -4,6 +4,7 @@ import { WorkExperiencePart } from '../pageParts/WorkExperiencePart/WorkExperien
 import { ContentContainer } from '../ui/ContentContainer';
 import { MetaHead } from '../components/mdx';
 import MdxLayout from './MdxLayout';
+import { CvExperiencePart } from '../pageParts/WorkExperiencePart/CvExperiencePart';
 
 export default function HomePage() {
   return (
@@ -12,6 +13,7 @@ export default function HomePage() {
       <PageTemplate>
         <ContentContainer>
           <AboutMe />
+          <CvExperiencePart />
           <WorkExperiencePart />
         </ContentContainer>
       </PageTemplate>
