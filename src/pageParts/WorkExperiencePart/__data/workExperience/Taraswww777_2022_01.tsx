@@ -1,5 +1,5 @@
 import { WorkExperienceDto } from 'src/types/dto';
-import { FaIcon } from '../../../../ui/FaIcon';
+import { FaIcon } from '../../../../ui';
 
 export const Taraswww777_2022_02: WorkExperienceDto = {
   "dateBegin": "2022-02-24T01:00:00.000Z",
@@ -8,6 +8,7 @@ export const Taraswww777_2022_02: WorkExperienceDto = {
   "companySiteName": "taraswww777",
   "workPosition": "Сам себе хозяин",
   "technologiesTags": [
+    "Python", "Nexus", "Docker", "PostgreSQL","zod", "Prisma ORM",
     "Javascript", "React", "Typescript", "HTML5", 'PostCss', "CSS3", "webpack", 'swc',
     "GIT", 'NextJS', 'Angular2', "Vite", 'Tailwindcss'
   ],
@@ -15,6 +16,9 @@ export const Taraswww777_2022_02: WorkExperienceDto = {
     <>
       <p>
         Ставлю эксперименты над изучаемыми технологиями.
+      </p>
+      <p>
+        Сегодня активно обучаюсь на AI/ML Engineer
       </p>
       <p>
         Сначала написал сайт на Angular и Bootstrap5,
